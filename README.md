@@ -1,122 +1,47 @@
-# Data_Analytics_Project
-Airbnb Data Analysis and Machine Learning Project
-Overview
-This project involves the analysis of an Airbnb dataset, including data preprocessing, data cleaning, and implementing various machine learning models for predictive analysis.
+# DATA ANALYTICS Project
 
-Table of Contents
-Data Preparation and Cleansing
-Natural Language Processing (NLP)
-Data Encoding
-Data Analysis
-Machine Learning and Deep Learning Models
-Data Preparation and Cleansing
-Handling Missing Values
-Calculated Host Listings Count:
+# Airbnb Price prediction
+# Airbnb Data Analysis and Machine Learning Project
 
-Filled missing values using the median value of 'calculated host listings count' per host.
-Used the overall median as a fallback.
-Applied a function to fill missing values accordingly.
-Availability_365 Column:
+Data Preparation and Preprocessing Steps
+1. Handling Missing Values
+host_identity_verified: Replace Null values with 'unconfirmed', assuming null value means the host didn't verify themselves.
+instant_bookable: Replace Null values with 'False', assuming null value means it hasn't Instant_bookable Option.
+cancellation_policy: Remove rows with missing values in this column.
+lat and long: Drop rows with null values in both lat and long columns.
+neighbourhood group: Drop rows with null values in this column.
+2. Imputation
+Construction year: Fill the null values in the construction year column with the median construction year.
+minimum nights: Fill null values with 1, assuming minimum nights is 1 if not specified.
+calculated host listings count:
+Calculate the median of calculated host listings count for each host name.
+Use the overall median as a fallback for missing values.
+Apply a function to fill missing values with the host-specific median or the overall median if the host-specific median is not available.
+3. Handling Out-of-Range Values
+availability 365:
+Check for out-of-range values.
+Correct out-of-range values by setting negative values to 0 and values above 365 to 365.
+4. Dropping Columns
+Drop columns: 'host name', 'license', 'country', 'country code', 'id', 'host id'.
+5. Encoding Categorical Variables
+room type: Encode room types into numerical values for model compatibility.
+cancellation_policy: Encode cancellation policies into numerical values.
+6. Creating New Features
+price: Ensure all prices are in a consistent currency and format.
+service fee: Ensure all service fees are in a consistent currency and format.
+number of reviews: Ensure all review counts are integers and properly formatted.
+reviews per month: Ensure reviews per month are in a consistent format.
+review rate number: Ensure review rate numbers are properly formatted.
+minimum nights: Ensure minimum nights are properly formatted.
+instant_bookable: Ensure instant_bookable values are boolean.
+cancellation_policy: Ensure cancellation policies are in a consistent format.
+room type: Ensure room types are properly encoded.
+Construction year: Ensure construction years are properly formatted and imputed.
+calculated host listings count: Ensure calculated host listings counts are properly imputed.
+availability 365: Ensure availability 365 values are within the range 0-365.
+Additional Tips:
 
-Corrected out-of-range values in the 'availability 365' column.
-Replaced values less than 0 with 0 and values greater than 365 with 365.
-Replaced null values with 0.
-Host Identity Verified Column:
-
-Replaced null values with 'unconfirmed', assuming null indicates the host didn't verify their identity.
-Host Since Column:
-
-Converted to datetime format.
-Filled missing values with the median date.
-Host Response Rate Column:
-
-Converted percentage strings to numerical values.
-Filled missing values with the median response rate.
-Host Acceptance Rate Column:
-
-Converted percentage strings to numerical values.
-Filled missing values with the median acceptance rate.
-First Review Column:
-
-Converted to datetime format.
-Filled missing values with the median date of the first review.
-Last Review Column:
-
-Converted to datetime format.
-Filled missing values with the median date of the last review.
-Review Scores Rating Column:
-
-Filled missing values with the median review score.
-Neighbourhood Group Column:
-
-Filled missing values with 'Unknown'.
-Neighbourhood Column:
-
-Filled missing values with 'Unknown'.
-Latitude and Longitude Columns:
-
-Checked for and handled any outliers.
-Price Column:
-
-Converted to numerical values by removing currency symbols.
-Removed outliers based on statistical methods.
-Filled missing values with the median price.
-Minimum Nights Column:
-
-Checked for out-of-range values and corrected them.
-Replaced null values with the median minimum nights.
-Number of Reviews Column:
-
-Filled missing values with 0.
-Reviews per Month Column:
-
-Filled missing values with 0.
-Calculated Host Listings Count Column:
-
-Filled missing values using the median value per host.
-Availability 365 Column:
-
-Corrected out-of-range values.
-Replaced null values with 0.
-Outlier Detection and Correction
-Price Column:
-
-Removed outliers based on statistical methods.
-Used domain knowledge to set realistic price ranges.
-Review Scores Rating:
-
-Filled null values with the median score.
-Natural Language Processing
-Reviews Text Processing:
-Tokenization and stemming of text data.
-Removed stop words.
-Vectorized the text using TF-IDF (Term Frequency-Inverse Document Frequency).
-Data Encoding
-Categorical Data Encoding:
-Applied one-hot encoding to categorical features such as 'neighbourhood', 'room type', and 'cancellation policy'.
-Used label encoding for ordinal features.
-Data Analysis
-Exploratory Data Analysis (EDA):
-Visualized the distribution of various features.
-Identified correlations between different features.
-Used histograms, scatter plots, and heatmaps for better understanding of data.
-Machine Learning and Deep Learning Models
-Deep Neural Network (DNN):
-
-Defined, compiled, and trained a DNN model.
-Evaluated the model using RMSE, MAE, and R-squared metrics.
-Achieved significant results with fine-tuning and hyperparameter optimization.
-Recurrent Neural Network (RNN):
-
-Implemented an RNN model with embedding and SimpleRNN layers.
-Used the model for time series data prediction.
-Evaluated using RMSE, MAE, and R-squared metrics.
-Comparison of Models:
-
-Compared the performance of DNN and RNN models.
-Summarized the findings and highlighted the strengths of each model.
-Conclusion
-The project provides a comprehensive analysis of Airbnb data, highlighting the importance of data preprocessing and the application of advanced machine learning models for predictive analysis. The models developed can be further enhanced with more data and feature engineering.
-
-Authors
-Moamen Emam
+For longer lists or more complex steps, consider using numbered or bulleted lists within each section for better organization.
+If you have code snippets related to these steps, you can use code blocks in Markdown to format them correctly.
+Consider adding comments or explanations to clarify specific steps or decisions.
+   
