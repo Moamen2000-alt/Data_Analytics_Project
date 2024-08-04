@@ -227,3 +227,8 @@
   - The RNN performs poorly, indicating it may not be appropriate for the given data type.
 
 The ML models generally outperform the DL models for your dataset, suggesting that simpler models may be more effective.
+
+Authors and load of work:
+Salma: Data Exploration, Data Cleansing and Q2
+Yasmin: Data analysis & Check correlation between data, Data Cleansing and Q2
+Moamen Eman: NLP Part, Encoding part, Q1 & Q3
