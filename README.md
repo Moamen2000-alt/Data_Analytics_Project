@@ -16,11 +16,14 @@
 ## Data Preparation and Preprocessing Steps
 
 1. **Handling Missing Values**:
-   - **host_identity_verified**: Replace `Null` values with `'unconfirmed'`, assuming the null value means the host didn't verify themselves.
+   - **host_identity_verified**: Replace `Null` values with `'unconfirmed'`, assuming the null value means the host didn't verify 
+                               themselves.
    - **instant_bookable**: Replace `Null` values with `'False'`, assuming null value means it hasn't Instant_bookable Option.
    - **cancellation_policy**: Remove rows with missing values in this column.
    - **lat and long**: Drop rows with null values in both `lat` and `long` columns.
-   - **neighbourhood_group**: Drop rows with null values in this column.
+   - **neighbourhood_group**: create a reference dictionary that maps each 'neighborhood' to its corresponding 'neighborhood group' 
+                              based on non-missing values then imputes missing 'neighborhood group' values using the created mapping.
+   - **neighborhood**: Drop rows with null values
    - **last review**: full nulls with the oldest date in the dataset
 
 2. **Imputation**:
@@ -29,7 +32,8 @@
    - **calculated_host_listings_count**:
      - Calculate the median of `calculated_host_listings_count` for each hostname.
      - Use the overall median as a fallback for missing values.
-     - Apply a function to fill missing values with the host-specific median or the overall median if the host-specific median is not available.
+     - Apply a function to fill missing values with the host-specific median or the overall median if the host-specific median is not 
+       available.
 
 3. **Handling Out-of-Range Values**:
    - **availability_365**:
