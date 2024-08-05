@@ -236,6 +236,7 @@
 The ML models generally outperform the DL models for this dataset, suggesting that simpler models may be more effective.
 
 # Authors and Distribution of work:
-Salma: Data Exploration, Data Cleansing and Q2
-Yasmin: Check the correlation between data, Data Cleansing, and Q2
-Moamen Emam: NLP Part, Encoding part, Q1 & Q3 (Modeling Part)
+
+- Salma: Data Exploration, Data Cleansing and Q2
+- Yasmin: Check the correlation between data, Data Cleansing, and Q2
+- Moamen Emam: NLP Part, Encoding part, Q1 & Q3 (Modeling Part)
