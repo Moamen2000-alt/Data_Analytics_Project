@@ -2,7 +2,6 @@
 
 # Airbnb Price prediction
 
-
 ## Table of Contents
 1. [Data Preparation and Preprocessing Steps](#data-preparation-and-preprocessing-steps)
 2. [Data Splitting](#data-splitting)
@@ -28,7 +27,7 @@
    - **Construction year**: Fill null values in the construction year column with the median construction year.
    - **minimum_nights**: Fill null values with `1`, assuming minimum nights is `1` if not specified.
    - **calculated_host_listings_count**:
-     - Calculate the median of `calculated_host_listings_count` for each host name.
+     - Calculate the median of `calculated_host_listings_count` for each hostname.
      - Use the overall median as a fallback for missing values.
      - Apply a function to fill missing values with the host-specific median or the overall median if the host-specific median is not available.
 
@@ -193,6 +192,9 @@
 1. **Deep Neural Network (DNN)**:
    - **Model Architecture**:
      - Input: 128 units (ReLU) → Dropout → 64 units (ReLU) → Dropout → 32 units (ReLU) → Output
+     - Layers: The model consists of an input layer, three hidden layers, and an output layer.
+     - Activation Function: ReLU is used in the hidden layers to introduce non-linearity.
+     - Dropout: Dropout layers are included to prevent overfitting by randomly setting a fraction of the input units to zero during training.
    - **Results**:
      - **RMSE**: 101.73
      - **MAE**: 78.85
@@ -231,9 +233,9 @@
   - The DNN has higher RMSE and MAE compared to ML models and a lower R-squared value.
   - The RNN performs poorly, indicating it may not be appropriate for the given data type.
 
-The ML models generally outperform the DL models for your dataset, suggesting that simpler models may be more effective.
+The ML models generally outperform the DL models for this dataset, suggesting that simpler models may be more effective.
 
-Authors and load of work:
+# Authors and Distribution of work:
 Salma: Data Exploration, Data Cleansing and Q2
-Yasmin: Data analysis & Check correlation between data, Data Cleansing and Q2
+Yasmin: Check the correlation between data, Data Cleansing, and Q2
 Moamen Emam: NLP Part, Encoding part, Q1 & Q3 (Modeling Part)
