@@ -17,11 +17,12 @@
 ## Data Preparation and Preprocessing Steps
 
 1. **Handling Missing Values**:
-   - **host_identity_verified**: Replace `Null` values with `'unconfirmed'`, assuming null value means the host didn't verify themselves.
+   - **host_identity_verified**: Replace `Null` values with `'unconfirmed'`, assuming the null value means the host didn't verify themselves.
    - **instant_bookable**: Replace `Null` values with `'False'`, assuming null value means it hasn't Instant_bookable Option.
    - **cancellation_policy**: Remove rows with missing values in this column.
    - **lat and long**: Drop rows with null values in both `lat` and `long` columns.
    - **neighbourhood_group**: Drop rows with null values in this column.
+   - **last review**: full nulls with the oldest date in the dataset
 
 2. **Imputation**:
    - **Construction year**: Fill null values in the construction year column with the median construction year.
@@ -35,7 +36,7 @@
    - **availability_365**:
      - Check for out-of-range values.
      - Correct out-of-range values by setting negative values to `0` and values above `365` to `365`.
-     - assume null is 1, as it must be at least 1 night available 
+     - assume null is 0, as it nun could be representing a fully booked apartment
 
 4. **Dropping Columns**:
    - Drop columns: `host_name`, `license`, `country`, `country_code`, `id`, `host_id`.
@@ -44,7 +45,7 @@
    - **room_type**: Encode room types into numerical values for model compatibility.
    - **cancellation_policy**: Encode cancellation policies into numerical values.
 
-6. **Check other Features**:
+7. **Check other Features**:
    - **price**: Ensure all prices are in a consistent currency and format.
    - **service_fee**: Ensure all service fees are in a consistent currency and format.
    - **number_of_reviews**: Ensure all review counts are integers and properly formatted.
@@ -57,6 +58,7 @@
    - **Construction year**: Ensure construction years are properly formatted and imputed.
    - **calculated_host_listings_count**: Ensure `calculated_host_listings_count` are properly imputed.
    - **availability_365**: Ensure `availability_365` values are within the range `0-365`.
+     
 
 ## Data Splitting
 **Description**: The dataset is split into training and testing sets to ensure that the model can be evaluated on data it hasn't seen during training. This split is crucial for validating the model's performance and generalizability.
@@ -65,19 +67,22 @@
 **Description**: Natural Language Processing (NLP) is applied to the `NAME` and `house_rules` columns to extract meaningful information from the text data. The following steps are performed:
 
 1. **Text Preprocessing**:
-   - **Combining Text Columns**: The `NAME` and `house_rules` columns are combined into a single text column to consolidate the information.
-   - **Tokenization**: The combined text is tokenized, which involves breaking down the text into individual words or tokens. This step is essential for converting text into a format that can be further processed.
+   - **Text Columns**: The `NAME` and `house_rules` columns are divided between X_train and X_test before applying Tokenization to prevent data leakage.
+   - **Tokenization**: The text is tokenized, which involves breaking down the text into individual words or tokens. This step is essential for converting text into a format that can be further processed.
    - **Padding**: After tokenization, the sequences of tokens are padded to ensure they all have the same length. Padding is necessary because machine learning models require input data of uniform dimensions.
 
 ## Encoding Categorical Data
-**Description**: Categorical data is encoded into numerical format using `OneHotEncoder`. This encoding process is necessary because machine learning algorithms typically require numerical input. The following steps are performed:
+**Description**: Categorical data is encoded into a numerical format using `OneHotEncoder`. This encoding process is necessary because machine learning algorithms typically require numerical input. The following steps are performed:
 
-1. **Identifying Categorical Columns**: Columns containing categorical data, such as `host_identity_verified`, `neighbourhood_group`, `neighbourhood`, and `room_type`, are identified for encoding.
+1. **Identifying Categorical Columns**: Columns containing categorical data, such as 'host_identity_verified', 'neighborhood group', 'neighborhood',
+                                        'instant_bookable', 'cancellation_policy', and 'room type', are identified for encoding.
 2. **Applying OneHotEncoder on X_train and x_text separate to avoid data leakage**
-3. **Applying OneHotEncoder**: The identified categorical columns are transformed into a series of binary columns using `OneHotEncoder`. This process converts each category into a binary vector, making the data suitable for machine learning models.
-4. **Integrating Encoded Data**: The encoded categorical data is then integrated back into the original dataset, ensuring that the dataset contains both the original numerical features and the newly created binary features from the categorical data.
+3. **Applying OneHotEncoder**: The identified categorical columns are transformed into a series of binary columns using `OneHotEncoder`. This process converts each category into a 
+                                binary vector, making the data suitable for machine learning models.
+4. **Integrating Encoded Data**: The encoded categorical data is then integrated back into the original dataset, ensuring that the dataset contains both the original numerical features 
+                                  and the newly created binary features from the categorical data.
 
-## Relationship Between Strict House Rules and Listing Prices
+## Q1) Relationship Between Strict House Rules and Listing Prices
 
 **Objective**: To analyze the relationship between the sentiment of house rules and the listing prices. The sentiment of house rules is assessed using TextBlob to derive a sentiment polarity score, which is then used as a feature in a regression model to predict listing prices.
 
@@ -120,7 +125,7 @@
 - **Correlation**: The correlation between house rules sentiment and listing price is found to be -0.014, indicating a very weak negative relationship, So there is no direct relation 
    between house rules and listing price
 
-## Relationship Between Reviews and Listing Prices
+## Q2) Relationship Between Reviews and Listing Prices
 
 **Objective**: To analyze the relationship between the review ratings of listings and their prices. This analysis uses visualization techniques to explore and illustrate the relationship.
 
@@ -144,22 +149,22 @@
      - Title and label the axes appropriately.
 
 **Results**:
-- **Visual Insights**: The violin plot and box plot provide insights into how listing prices vary across different review rating categories. These visualizations highlight some trends  in the data but didn't ensure that review ratings have strong correlate with higher listing prices.
+- **Visual Insights**: The violin plot and box plot provide insights into how listing prices vary across different review rating categories. These visualizations highlight some trends  in the data but don't ensure that review ratings have a strong correlation with higher listing prices.
 
-## Modeling 
+## Q3) Modeling Part, How effective are traditional machine learning models and deep learning models in predicting listing prices?
 
 1. **Linear Regression**: Simple and fastest one, also less consumer for resources 
    - **RMSE**: 24.70
    - **MAE**: 2.97
    - **R-squared**: 0.9945
 
-2. **Gradient Boosting**: provides very good accuracy but it consumes the resources very much 
+2. **Gradient Boosting**: provides very good accuracy but it consumes resources very much 
    - **Best Parameters**: `{'learning_rate': 0.1, 'max_depth': 4, 'n_estimators': 50}`
    - **RMSE**: 24.57
    - **MAE**: 3.93
    - **R-squared**: 0.9945
 
-3. **XGBoost**: use XGBoost as it has better performance than normal Gradient Boosting and also built the model to be simple as I already graped the best parameters from the Gradient 
+3. **XGBoost**: use XGBoost as it has better performance than normal Gradient Boosting and also built the model to be simple as I already had the best parameters from the Gradient 
      Boosting  
    - **Same Parameters**: `{'learning_rate': 0.1, 'max_depth': 4, 'n_estimators': 50}`
    - **RMSE**: 24.50
@@ -169,7 +174,7 @@
 4. **Random Forest (Full Grid Search)**:
    - Note: The grid search did not converge and was resource-intensive.
 
-5. **Random Forest (Simplified Model)**: try to build simple Random Forest based on the good parameters from number 4 
+5. **Random Forest (Simplified Model)**: try to build a simple Random Forest based on the good parameters from number 4 
    - **Parameters**: `{'n_estimators': 200, 'max_depth': None, 'min_samples_leaf': 1}`
    - **RMSE**: 25.25
    - **MAE**: 3.05
@@ -205,15 +210,15 @@
 - **DNN Performance**:
   - The DNN model performs relatively well with lower RMSE and MAE compared to the RNN. The R-squared value, while not as high as the traditional models, indicates that the DNN can 
     capture some patterns in the data.
-  - The high RMSE and MAE indicate that the DNN model might still have room for improvement or that the target variable might have a wide range of values.
+  - The high RMSE and MAE indicate that the DNN model might still have room for improvement.
 
 - **RNN Performance**:
-  - The RNN model significantly underperforms compared to the other models. The high RMSE, MAE, and negative R-squared value suggest that it isn't capturing the underlying patterns well.
+  - The RNN model significantly underperforms compared to the other models. The high RMSE, MAE, and negative R-squared value suggest it isn't capturing the underlying patterns well.
   - RNNs are typically used for sequential or time-series data. If your data isn’t sequential, an RNN might not be suitable.
 
 **Recommendations**:
 - **DNN Tuning**:
-  - Consider tuning hyperparameters such as the number of layers, units, dropout rates, and learning rates to potentially improve the model’s performance.
+  - Consider tuning hyperparameters such as the number of layers, units, dropout rates, and learning rates to improve the model’s performance potentially.
   - Experiment with different architectures and regularization techniques to prevent overfitting.
 
 ## Summary
@@ -231,4 +236,4 @@ The ML models generally outperform the DL models for your dataset, suggesting th
 Authors and load of work:
 Salma: Data Exploration, Data Cleansing and Q2
 Yasmin: Data analysis & Check correlation between data, Data Cleansing and Q2
-Moamen Eman: NLP Part, Encoding part, Q1 & Q3
+Moamen Emam: NLP Part, Encoding part, Q1 & Q3 (Modeling Part)
